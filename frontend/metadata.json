@@ -1,0 +1,5 @@
+{
+  "name": "DSK Smart Triage",
+  "description": "AI-powered triage and operations desk for DSK Bank incoming business emails.",
+  "requestFramePermissions": []
+}
