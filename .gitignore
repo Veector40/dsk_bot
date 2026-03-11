@@ -1,0 +1,12 @@
+# Environments
+venv/
+env/
+.env
+
+# Langflow databases/caches
+*.db
+*.sqlite
+__pycache__/
+
+# Mock data (Optional: you can remove this if you want your teammates to have the mock emails)
+# mock_data/ 
