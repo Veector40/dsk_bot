@@ -794,7 +794,7 @@
         "dragging": false,
         "id": "LanguageModelComponent-sYV2N",
         "measured": {
-          "height": 371,
+          "height": 370,
           "width": 320
         },
         "position": {
@@ -1577,7 +1577,7 @@
         "dragging": false,
         "id": "LanguageModelComponent-F3OOm",
         "measured": {
-          "height": 371,
+          "height": 370,
           "width": 320
         },
         "position": {
@@ -1598,8 +1598,8 @@
             "conditional_paths": [],
             "custom_fields": {
               "template": [
-                "dispatcher_json",
-                "user_input"
+                "user_input",
+                "dispatcher_json"
               ]
             },
             "description": "Create a prompt template with dynamic variables.",
@@ -1729,7 +1729,7 @@
                 "trace_as_input": true,
                 "track_in_telemetry": false,
                 "type": "mustache",
-                "value": "Ти си банков AI екстрактор (Agent 2). По-долу имаш съобщението на клиента и класификацията от Диспечера.\n\nПРАВИЛО ЗА ФИЛТРИРАНЕ: Разгледай класификацията на диспечера.\n- Ако класификацията съдържа САМО \"COMPLAINT\" или \"OTHER\" (и няма POS_REQUEST или CREDIT_REQUEST), върни СТРИКТНО празен обект: {}\n- Ако класификацията съдържа \"POS_REQUEST\" или \"CREDIT_REQUEST\" (дори и да има оплакване), ИЗВЛЕЧИ данните.\n\nИзискван JSON формат (не си измисляй данни, задължително върни null ако липсват):\n{\n  \"company_name\": \"Името на фирмата или null\",\n  \"eik\": \"ЕИК (само цифри, премахни тирета/интервали/букви) или null\",\n  \"credit_amount\": число (сума на кредита) или null,\n  \"pos_quantity\": число (брой ПОС терминали) или null,\n  \"locations\": [\"град1\", \"град2\"] или []\n}\n\nВАЖНО: Върни САМО чист JSON обект, без Markdown форматиране (без ```json).\n\nОригинален текст:\n{{user_input}}\n\nКласификация от диспечера:\n{{dispatcher_json}}"
+                "value": "Ти си банков AI екстрактор (Agent 2). По-долу имаш съобщението на клиента и класификацията от Диспечера.\n\nПРАВИЛО ЗА ФИЛТРИРАНЕ:\n- Ако класификацията съдържа САМО \"COMPLAINT\" или \"OTHER\", върни СТРИКТНО празен обект: {}\n- Ако класификацията съдържа \"POS_REQUEST\" или \"CREDIT_REQUEST\", ИЗВЛЕЧИ данните.\n\nИзискван JSON формат (задължително върни null ако липсват):\n{\n  \"company_name\": \"Името на фирмата или null\",\n  \"eik\": \"ЕИК (само цифри) или null\",\n  \"credit_amount\": число или null,\n  \"currency\": \"BGN\", \"EUR\" или null,\n  \"pos_quantity\": число или null,\n  \"pos_action\": \"NEW\" или \"RETURN\" или null,\n  \"pos_type\": \"VIRTUAL\" (ако се споменава виртуален/онлайн магазин) или \"PHYSICAL\" (по подразбиране),\n  \"locations\": [\"град1\", \"град2\"] или []\n}\n\nВАЖНО: Върни САМО чист JSON обект, без Markdown форматиране (без ```json).\n\nОригинален текст:\n{{user_input}}\n\nКласификация от диспечера:\n{{dispatcher_json}}\n"
               },
               "tool_placeholder": {
                 "_input_type": "MessageTextInput",
@@ -1808,7 +1808,7 @@
         "dragging": false,
         "id": "Prompt Template-nktYj",
         "measured": {
-          "height": 429,
+          "height": 428,
           "width": 320
         },
         "position": {
@@ -2383,7 +2383,7 @@
         "dragging": false,
         "id": "LanguageModelComponent-pTVcR",
         "measured": {
-          "height": 371,
+          "height": 370,
           "width": 320
         },
         "position": {
@@ -2534,7 +2534,7 @@
                 "trace_as_input": true,
                 "track_in_telemetry": false,
                 "type": "mustache",
-                "value": "Ти си AI банков валидатор (Risk Validator) за Банка ДСК. Получаваш структурирани JSON данни, извлечени от клиентска заявка. \n\nПРАВИЛО ЗА ИГНОРИРАНЕ: Ако получиш празен обект {}, това означава, че документът не е бизнес заявка (напр. е жалба). В този случай върни СТРИКТНО: {\"priority\": \"LOW\", \"status\": \"IGNORED\", \"flag_reason\": \"Документът не е бизнес заявка\"}\n\nПРАВИЛА ЗА ВАЛИДАЦИЯ (само ако има данни):\n1. Липсващи данни: Ако \"company_name\" е null, \"eik\" е null, или ако И ДВЕТЕ (\"credit_amount\" и \"pos_quantity\") са null -> \"status\": \"REQUIRES_HUMAN_REVIEW\", \"priority\": \"HIGH\", \"flag_reason\": \"Липсват задължителни данни\".\n2. Висок риск: Ако \"credit_amount\" не е null и е над 100000 -> \"status\": \"REQUIRES_HUMAN_REVIEW\", \"priority\": \"HIGH\", \"flag_reason\": \"Висок кредитен риск\".\n3. ПОС локации: Ако \"pos_quantity\" не е null, но масивът \"locations\" е празен -> \"status\": \"REQUIRES_HUMAN_REVIEW\", \"priority\": \"MEDIUM\", \"flag_reason\": \"Липсват локации за инсталация\".\n4. Готовност: Ако всички нужни данни са налични и сумата е в норма -> \"status\": \"AUTO_APPROVED\", \"priority\": \"LOW\", \"flag_reason\": null.\n\nИзискван JSON формат:\n\"priority\": \"HIGH\", \"MEDIUM\" или \"LOW\"\n\"status\": \"AUTO_APPROVED\", \"REQUIRES_HUMAN_REVIEW\" или \"IGNORED\"\n\"flag_reason\": \"Обяснение или null\"\n\nВходящи извлечени данни:\n{{extractor_json}}"
+                "value": "Ти си AI банков валидатор (Risk Validator) за Банка ДСК. Получаваш структурирани JSON данни.\n\nПРАВИЛО ЗА ИГНОРИРАНЕ: Ако получиш празен обект {}, това означава, че документът не е бизнес заявка. В този случай върни СТРИКТНО И БЕЗ ИЗКЛЮЧЕНИЯ: \"priority\": \"LOW\", \"status\": \"IGNORED\", \"flag_reason\": \"Документът не е бизнес заявка\".\n\nПРАВИЛА ЗА ВАЛИДАЦИЯ (само ако има данни):\n1. Връщане на ПОС: Ако \"pos_action\" е \"RETURN\" -> \"status\": \"REQUIRES_HUMAN_REVIEW\", \"priority\": \"MEDIUM\", \"flag_reason\": \"Заявка за връщане на оборудване\".\n2. Невалиден ЕИК: Ако \"eik\" не е null и дължината му е различна от 9 и 13 цифри -> \"status\": \"REQUIRES_HUMAN_REVIEW\", \"priority\": \"HIGH\", \"flag_reason\": \"Невалиден формат на ЕИК (трябва да са 9 или 13 цифри)\".\n3. Липсващи данни: Ако \"company_name\" е null, \"eik\" е null, или ако И ДВЕТЕ (\"credit_amount\" и \"pos_quantity\") са null -> \"status\": \"REQUIRES_HUMAN_REVIEW\", \"priority\": \"HIGH\", \"flag_reason\": \"Липсват задължителни данни\".\n4. Висок риск: Ако \"credit_amount\" не е null и е над 100000 -> \"status\": \"REQUIRES_HUMAN_REVIEW\", \"priority\": \"HIGH\", \"flag_reason\": \"Висок кредитен риск\".\n5. ПОС локации: Ако \"pos_quantity\" не е null, \"pos_action\" е \"NEW\" и \"pos_type\" е \"PHYSICAL\", но масивът \"locations\" е празен -> \"status\": \"REQUIRES_HUMAN_REVIEW\", \"priority\": \"MEDIUM\", \"flag_reason\": \"Липсват локации за физически инсталации\".\n6. Готовност: Иначе -> \"status\": \"AUTO_APPROVED\", \"priority\": \"LOW\", \"flag_reason\": null.\n\nПЕРСОНАЛИЗИРАН ОТГОВОР (draft_reply): Напиши учтив проекто-отговор. ИЗПОЛЗВАЙ извлечените данни! Обърни се към фирмата по име, цитирай точната сума и валута (ако има) или бройката ПОС терминали/локации. Обясни адекватно следващите стъпки спрямо статуса.\n\nИзискван JSON формат:\n{\n  \"company_name\": \"...\",\n  \"eik\": \"...\",\n  \"credit_amount\": число или null,\n  \"currency\": \"...\",\n  \"pos_quantity\": число или null,\n  \"pos_action\": \"...\",\n  \"locations\": [],\n  \"priority\": \"HIGH\", \"MEDIUM\" или \"LOW\",\n  \"status\": \"AUTO_APPROVED\", \"REQUIRES_HUMAN_REVIEW\" или \"IGNORED\",\n  \"flag_reason\": \"Обяснение или null\",\n  \"draft_reply\": \"Много специфичен и персонализиран отговор спрямо данните...\"\n}\n\nВАЖНО: Върни САМО чист JSON обект.\n\nВходящи извлечени данни:\n{{extractor_json}}\n"
               },
               "tool_placeholder": {
                 "_input_type": "MessageTextInput",
@@ -3195,8 +3195,8 @@
       }
     ],
     "viewport": {
-      "x": 106.49475741336204,
-      "y": 287.98406482063854,
+      "x": -75.50524258663796,
+      "y": 226.10906482063854,
       "zoom": 0.25
     }
   },
