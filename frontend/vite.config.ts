@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
       proxy: {
         // Proxy to Langflow AI
         '/langflow-api': {
-          target: 'http://localhost:7863',
+          target: 'http://localhost:7860',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/langflow-api/, ''),
         },
